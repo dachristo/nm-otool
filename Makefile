@@ -6,7 +6,7 @@
 #    By: dchristo <ybarbier@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/03 11:35:46 by dchristo          #+#    #+#              #
-#    Updated: 2017/05/23 18:46:30 by dchristo         ###   ########.fr        #
+#    Updated: 2017/05/24 16:05:46 by dchristo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ CFLAGS = -Wall -Wextra -Werror
 
 SRCDIR = src
 
-CFILES = main.c nm.c otool.c
+CFILES = main.c nm.c otool.c libft.c
 
 SRC = $(patsubst %, $(SRCDIR)/%, $(CFILES))
 
