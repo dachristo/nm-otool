@@ -6,7 +6,7 @@
 /*   By: dchristo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 18:40:52 by dchristo          #+#    #+#             */
-/*   Updated: 2017/05/23 18:45:49 by dchristo         ###   ########.fr       */
+/*   Updated: 2017/05/24 16:01:17 by dchristo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ int main(int argc, char **argv)
 {
 	if (argc != 2)
 	{
-		printf("pas d'argument\n");
-		return (0);
+		ft_putstr("pas d'argument\n");
+		return (EXIT_FAILURE);
 	}
-	(void)argv;
-	nm();
+	if (start_nm(argv[1]) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	otool();
-	return (0);
+	return (EXIT_SUCCESS);
 }
