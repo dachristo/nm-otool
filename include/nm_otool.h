@@ -6,7 +6,7 @@
 /*   By: dchristo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 18:40:38 by dchristo          #+#    #+#             */
-/*   Updated: 2017/05/24 16:24:46 by dchristo         ###   ########.fr       */
+/*   Updated: 2017/05/24 16:27:45 by dchristo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include <unistd.h>
 
 void	nm(char *str);
-void	otool(void);
 void	ft_putstr(char *str);
 void	ft_putnbr(long n);
 int		start_nm(char *file);
