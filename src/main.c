@@ -6,7 +6,7 @@
 /*   By: dchristo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 18:40:52 by dchristo          #+#    #+#             */
-/*   Updated: 2017/05/24 16:22:23 by dchristo         ###   ########.fr       */
+/*   Updated: 2017/05/24 17:44:51 by dchristo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,6 @@ int	main(int argc, char **argv)
 	}
 	if (start_nm(argv[1]) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	otool();
+	//otool();
 	return (EXIT_SUCCESS);
 }
