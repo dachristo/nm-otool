@@ -6,13 +6,13 @@
 /*   By: dchristo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 18:40:52 by dchristo          #+#    #+#             */
-/*   Updated: 2017/05/24 16:01:17 by dchristo         ###   ########.fr       */
+/*   Updated: 2017/05/24 16:22:23 by dchristo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/nm-otool.h"
+#include "../include/nm_otool.h"
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	if (argc != 2)
 	{
