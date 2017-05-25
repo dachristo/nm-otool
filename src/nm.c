@@ -6,11 +6,21 @@
 /*   By: dchristo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 18:41:43 by dchristo          #+#    #+#             */
-/*   Updated: 2017/05/24 17:56:43 by dchristo         ###   ########.fr       */
+/*   Updated: 2017/05/25 15:24:59 by dchristo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/nm_otool.h"
+
+void	ft_putsymtype(char *str)
+{
+	if (ft_strcmp("_header", str) == 0)
+		ft_putstr("t");
+	else if (ft_strcmp("header", str) == 0)
+		ft_putstr("T");
+	else if (ft_strcmp("", str) == 0)
+		ft_putstr("U");
+}
 
 void	print_out(int nsyms, int symoff, int stroff, char *ptr)
 {
@@ -23,7 +33,17 @@ void	print_out(int nsyms, int symoff, int stroff, char *ptr)
 	i = 0;
 	while (i < nsyms)
 	{
-		ft_putstr(stringtable + array[i].n_un.n_strx);
+		if (array[i].n_value != 0)
+		{
+			ft_putstr("0000000");
+			ft_puthex(array[i].n_value); // value
+		}
+		else
+			ft_putstr("                ");
+		ft_putstr(" ");
+		ft_putsymtype(stringtable + array[i].n_type); // type
+		ft_putstr(" ");
+		ft_putstr(stringtable + array[i].n_un.n_strx); // function_name
 		ft_putstr("\n");
 		i++;
 	}
