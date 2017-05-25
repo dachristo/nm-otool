@@ -6,11 +6,11 @@
 /*   By: dchristo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 13:43:48 by dchristo          #+#    #+#             */
-/*   Updated: 2017/05/24 15:48:28 by dchristo         ###   ########.fr       */
+/*   Updated: 2017/05/25 15:23:25 by dchristo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/nm-otool.h"
+#include "../include/nm_otool.h"
 
 static int		ft_strlen(char *str)
 {
@@ -20,6 +20,33 @@ static int		ft_strlen(char *str)
 	while (str[i] != '\0')
 		i++;
 	return (i);
+}
+
+void			ft_puthex(size_t n)
+{
+	char		c;
+
+	if (n > 15)
+	{
+		ft_puthex(n / 16);
+		ft_puthex(n % 16);
+	}
+	else
+	{
+		c = (n < 10) ? '0' + n : FT_HEX[n % 10];
+		write(1, &c, 1);
+	}
+}
+
+int				ft_strcmp(const char *s1, const char *s2)
+{
+	size_t	i;
+
+	i = 0;
+	while (((unsigned char *)s1)[i] == ((unsigned char *)s2)[i] &&
+			((unsigned char *)s1)[i] && ((unsigned char *)s2)[i])
+		++i;
+	return ((int)(((unsigned char *)s1)[i] - ((unsigned char *)s2)[i]));
 }
 
 void			ft_putstr(char *str)
