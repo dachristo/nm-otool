@@ -6,11 +6,11 @@
 #    By: dchristo <ybarbier@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2014/11/03 11:35:46 by dchristo          #+#    #+#              #
-#    Updated: 2017/05/25 14:30:25 by dchristo         ###   ########.fr        #
+#    Updated: 2017/05/31 17:48:01 by dchristo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = nm-otool
+NAME = ft_nm
 
 CC = gcc
 
