@@ -6,7 +6,7 @@
 /*   By: dchristo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 18:40:38 by dchristo          #+#    #+#             */
-/*   Updated: 2017/05/25 15:25:35 by dchristo         ###   ########.fr       */
+/*   Updated: 2017/05/31 18:15:14 by dchristo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 # include <unistd.h>
 # define FT_HEX "abcdef"
 
-void	nm(char *str);
 void	ft_putstr(char *str);
 void	ft_putnbr(long n);
 int		start_nm(char *file);
