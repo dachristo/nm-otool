@@ -6,7 +6,7 @@
 /*   By: dchristo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 18:41:43 by dchristo          #+#    #+#             */
-/*   Updated: 2017/05/30 19:22:04 by dchristo         ###   ########.fr       */
+/*   Updated: 2017/06/02 16:41:08 by dchristo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,13 +115,17 @@ void	handle_64(char *ptr)
 	}
 }
 
-void	nm(char *ptr)
+int		nm(char *ptr)
 {
 	unsigned int		magic_number;
 
 	magic_number = *(int *) ptr;
 	if (magic_number == MH_MAGIC_64)
+	{
 		handle_64(ptr);
+		return (EXIT_SUCCESS);
+	}
+	return (EXIT_FAILURE);
 }
 
 int		start_nm(char *file)
@@ -146,7 +150,7 @@ int		start_nm(char *file)
 		perror("mmap");
 		return (EXIT_FAILURE);
 	}
-	nm(ptr);
+	return(nm(ptr));
 	if (munmap(ptr, buf.st_size) < 0)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
