@@ -6,7 +6,7 @@
 /*   By: dchristo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/23 18:41:43 by dchristo          #+#    #+#             */
-/*   Updated: 2017/06/02 16:41:08 by dchristo         ###   ########.fr       */
+/*   Updated: 2017/10/22 17:25:18 by dchristo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	ft_putsymtype(char *str)
 }
 
 
-void	print_out(int *tried, struct symtab_command *sym, char *ptr)
+int		print_out(int *tried, struct symtab_command *sym, char *ptr)
 {
 	int					i;
 	char				*stringtable;
@@ -34,22 +34,27 @@ void	print_out(int *tried, struct symtab_command *sym, char *ptr)
 	array = (void *) ptr + sym->symoff;
 	stringtable = (void *) ptr + sym->stroff;
 	i = 0;
-	while (tried[i] != -1)
+	if (tried)
 	{
-		if (array[tried[i]].n_value != 0)
+		while (tried[i] != -1)
 		{
-			ft_putstr("0000000");
-			ft_puthex(array[tried[i]].n_value); // value
+			if (array[tried[i]].n_value != 0)
+			{
+				ft_putstr("0000000");
+				ft_puthex(array[tried[i]].n_value); // value
+			}
+			else
+				ft_putstr("                ");
+			ft_putstr(" ");
+			ft_putsymtype(stringtable + array[tried[i]].n_type); // type
+			ft_putstr(" ");
+			ft_putstr(stringtable + array[tried[i]].n_un.n_strx); // function_name
+			ft_putstr("\n");
+			i++;
 		}
-		else
-			ft_putstr("                ");
-		ft_putstr(" ");
-		ft_putsymtype(stringtable + array[tried[i]].n_type); // type
-		ft_putstr(" ");
-		ft_putstr(stringtable + array[tried[i]].n_un.n_strx); // function_name
-		ft_putstr("\n");
-		i++;
+		return (1);
 	}
+	return (0);
 }
 
 int		*tri_before(int nsyms, int symoff, int stroff, char *ptr)
@@ -60,59 +65,69 @@ int		*tri_before(int nsyms, int symoff, int stroff, char *ptr)
 	int					*tried;
 	int					tmp;
 	int					j;
+
 	array = (void *) ptr + symoff;
 	stringtable = (void *) ptr + stroff;
-	i = 0;
-	tried = malloc(sizeof(int) * nsyms + 1);
-	while (i < nsyms)
+	if ((tried = malloc(sizeof(int) * nsyms + 1)) == NULL)
 	{
-		tried[i] = i;
-		i++;
+		perror("malloc");
+		return (NULL);
 	}
+	i = -1;
+	while (++i < nsyms)
+		tried[i] = i;
 	tried[i] = -1;
-	i = 0;
-	while (tried[i] != -1)
+	i = -1;
+	while (tried[++i] != -1)
 	{
-		j = 0;
-		while (j < nsyms)
+		j = -1;
+		while (++j < nsyms)
 		{
-			if (ft_strcmp(stringtable + array[tried[i]].n_un.n_strx, 
-				stringtable + array[tried[j]].n_un.n_strx) < 0)
+			if (ft_strcmp(stringtable + array[tried[i]].n_un.n_strx,
+						stringtable + array[tried[j]].n_un.n_strx) < 0)
 			{
 				tmp = tried[i];
 				tried[i] = tried[j];
 				tried[j] = tmp;
 			}
-			j++;
 		}
-		i++;
 	}
 	return (tried);
 }
 
-void	handle_64(char *ptr)
+int		handle_64(char *ptr)
 {
 	int						ncmds;
-	int 					i;
+	int						i;
+	int						j;
+	int						k;
 	struct mach_header_64	*header;
 	struct load_command		*lc;
 	struct symtab_command	*sym;
+	char					*sec_str[255];
 
 	header = (struct mach_header_64 *) ptr;
 	ncmds = header->ncmds;
-	i = 0;
+	i = -1;
+	k = -1;
 	lc = (void *) ptr + sizeof(*header);
-	while (i < ncmds)
+	while (++i < ncmds)
 	{
+		if (lc->cmd == LC_SEGMENT_64)
+		{
+			j = -1;
+			while (++j < (int)((struct segment_command_64*)lc)->nsects)
+				sec_str[++k] = ((struct section_64*)((void*)lc + \
+					sizeof(struct segment_command_64)))[j].sectname;
+		}
 		if (lc->cmd == LC_SYMTAB)
 		{
 			sym = (struct symtab_command *) lc;
-			print_out(tri_before(sym->nsyms, sym->symoff, sym->stroff, ptr), sym, ptr);
-			break ;
+			return (print_out(tri_before(sym->nsyms, sym->symoff, sym->stroff, ptr), sym, ptr));
 		}
-		i++;
 		lc = (void *) lc + lc->cmdsize;
 	}
+	return (EXIT_FAILURE);
 }
 
 int		nm(char *ptr)
@@ -121,10 +136,11 @@ int		nm(char *ptr)
 
 	magic_number = *(int *) ptr;
 	if (magic_number == MH_MAGIC_64)
+		return (handle_64(ptr));
+	/*else if (magic_number == MH_MAGIC)
 	{
-		handle_64(ptr);
-		return (EXIT_SUCCESS);
-	}
+		return(handle_32(ptr));
+	}*/
 	return (EXIT_FAILURE);
 }
 
@@ -145,12 +161,12 @@ int		start_nm(char *file)
 		return (EXIT_FAILURE);
 	}
 	if ((ptr = mmap(0, buf.st_size, PROT_READ, MAP_PRIVATE, fd, 0))
-		== MAP_FAILED)
+			== MAP_FAILED)
 	{
 		perror("mmap");
 		return (EXIT_FAILURE);
 	}
-	return(nm(ptr));
+	return (nm(ptr));
 	if (munmap(ptr, buf.st_size) < 0)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
