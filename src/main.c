@@ -14,13 +14,17 @@
 
 int	main(int argc, char **argv)
 {
-	if (argc != 2)
+	int i;
+
+	i = 0;
+	if (argc == 1)
 	{
-		ft_putstr("pas d'argument\n");
-		return (EXIT_FAILURE);
+		if (check_file("a.out", argc) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
 	}
-	if (start_nm(argv[1]) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	//otool();
+	else
+		while (++i < argc)
+			if (check_file(argv[i], argc) == EXIT_FAILURE)
+				return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

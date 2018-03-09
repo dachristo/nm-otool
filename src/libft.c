@@ -12,7 +12,7 @@
 
 #include "../include/nm_otool.h"
 
-static int		ft_strlen(char *str)
+static int	ft_strlen(char *str)
 {
 	int			i;
 
@@ -22,7 +22,7 @@ static int		ft_strlen(char *str)
 	return (i);
 }
 
-void			ft_puthex(size_t n)
+void		ft_puthex(size_t n)
 {
 	char		c;
 
@@ -38,7 +38,7 @@ void			ft_puthex(size_t n)
 	}
 }
 
-int				ft_strcmp(const char *s1, const char *s2)
+int			ft_strcmp(const char *s1, const char *s2)
 {
 	size_t	i;
 
@@ -49,12 +49,17 @@ int				ft_strcmp(const char *s1, const char *s2)
 	return ((int)(((unsigned char *)s1)[i] - ((unsigned char *)s2)[i]));
 }
 
-void			ft_putstr(char *str)
+void		ft_putchar(char c)
+{
+	write(1, &c, 1);
+}
+
+void		ft_putstr(char *str)
 {
 	write(1, str, ft_strlen(str));
 }
 
-void			ft_putnbr(long n)
+void		ft_putnbr(long n)
 {
 	char		c;
 
@@ -75,4 +80,19 @@ void			ft_putnbr(long n)
 		c = n + '0';
 		write(1, &c, 1);
 	}
+}
+
+int			ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (((((unsigned char *)s1)[i] ||
+			((unsigned char *)s2)[i])) &&
+			i < n &&
+			((unsigned char *)s1)[i] == ((unsigned char *)s2)[i])
+		i++;
+	if (i == n)
+		return (0);
+	return ((int)(((unsigned char *)s1)[i] - ((unsigned char *)s2)[i]));
 }

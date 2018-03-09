@@ -14,11 +14,12 @@ NAME = ft_nm
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror
+#CFLAGS = -Wall -Wextra -Werror
 
 SRCDIR = src
 
-CFILES = main.c nm.c libft.c
+CFILES = main.c ft_nm.c libft.c ft_data.c ft_sort.c ft_handle.c ft_display_64.c \
+            ft_display_32.c
 
 SRC = $(patsubst %, $(SRCDIR)/%, $(CFILES))
 
