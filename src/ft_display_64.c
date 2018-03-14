@@ -57,7 +57,7 @@ void		ft_print_out64(t_data *data, char **sec_str, int n)
 	while (++i < n)
 	{
 		if (data->array[data->index[i]].n_type & N_STAB)
-			continue ;
+			continue;
 		if ((((data->array[data->index[i]].n_type & N_TYPE) != N_UNDF ||
 				data->array[data->index[i]].n_value) &&
 				(data->array[data->index[i]].n_type & N_TYPE) != N_INDR))

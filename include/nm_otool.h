@@ -28,19 +28,35 @@
 # include <string.h>
 # define FT_HEX "abcdef"
 
-typedef struct	s_data
+typedef struct		s_data
 {
     struct nlist_64	*array;
     char			*stringtable;
     int             *index;
-}				t_data;
+}					t_data;
 
-typedef struct	s_data32
+typedef struct		s_data32
 {
 	struct nlist	*array;
 	char			*stringtable;
 	int				*index;
-}				t_data32;
+}					t_data32;
+
+typedef struct		s_file_ptr
+{
+	void			*ptr_free;
+	void			*ptr;
+	void			*ptr_end;
+	int				size;
+}					t_file_ptr;
+
+typedef struct		s_lib
+{
+	char			*start;
+	unsigned int	st_len;
+	unsigned int	arr_len;
+	char			*str;
+}					t_lib;
 
 typedef struct mach_header_64	t_mach_header_64;
 typedef struct mach_header		t_mach_header;
@@ -51,32 +67,51 @@ typedef struct nlist			t_nlist;
 /*
  * LIBFT
  */
-void	ft_putstr(char *str);
-void 	ft_putchar(char c);
-void	ft_putnbr(long n);
-int		ft_strcmp(const char *s1, const char *s2);
-int		ft_strncmp(const char *s1, const char *s2, size_t n);
-void	ft_puthex(size_t n);
+void			ft_putstr(char *str);
+void 			ft_putchar(char c);
+void			ft_putnbr(long n);
+int				ft_strcmp(const char *s1, const char *s2);
+int				ft_strncmp(const char *s1, const char *s2, size_t n);
+void			ft_puthex(size_t n);
+char			*ft_strchr(const char *s, int c);
+int				ft_atoi(const char *str);
+int				ft_isdigit(int c);
 
 /*
  * UTIL CHECK
  */
-int		check_file(char *file, int argc);
+int				check_file(char *file, int argc);
+void			check_ptr(void *ptr, char *error, t_file_ptr *file_ptr);
 
 /*
  * MH MAGIC 64
  */
-void	ft_handle64(char *ptr, t_mach_header_64 *header);
-void	ft_sym64(struct symtab_command *sym, char **sec_str, char *ptr);
-void	ft_print_out64(t_data *data, char **sec_str, int n);
-void	ft_sort32(t_data32 *data, int nsyms);
+void			ft_handle64(t_mach_header_64 *header, t_file_ptr *file_ptr, int i, int j);
+void			ft_sym64(struct symtab_command *sym, char **sec_str, t_file_ptr *ptr_file);
+void			ft_print_out64(t_data *data, char **sec_str, int n);
+void			ft_sort32(t_data32 *data, int start, int end);
 
 /*
  * MH MAGIC 32
  */
-void	ft_handle32(char *ptr, t_mach_header *header);
-void	ft_sym32(struct symtab_command *sym, char **sec_str, char *ptr);
-void	ft_print_out32(t_data32 *data, char **sec_str, int n);
-void	ft_sort64(t_data *data, int nsyms);
+void			ft_handle32(t_mach_header *header, t_file_ptr *file_ptr, int i, int j);
+void			ft_sym32(struct symtab_command *sym, char **sec_str, t_file_ptr *ptr_file);
+void			ft_print_out32(t_data32 *data, char **sec_str, int n);
+void			ft_sort64(t_data *data, int start, int end);
+
+/*
+ * LIB
+ */
+void			ft_lib(t_file_ptr *ptr_file, char *file, int size);
+
+/*
+ * FAT
+ */
+void			ft_fat_handle(t_fat_header *header, t_file_ptr *ptr_file, char *file);
+
+/*
+ * TOOLS
+ */
+unsigned int	ft_rev_int(unsigned int num);
 
 #endif

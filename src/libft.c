@@ -45,7 +45,9 @@ int			ft_strcmp(const char *s1, const char *s2)
 	i = 0;
 	while (((unsigned char *)s1)[i] == ((unsigned char *)s2)[i] &&
 			((unsigned char *)s1)[i] && ((unsigned char *)s2)[i])
+	{
 		++i;
+	}
 	return ((int)(((unsigned char *)s1)[i] - ((unsigned char *)s2)[i]));
 }
 
@@ -57,42 +59,4 @@ void		ft_putchar(char c)
 void		ft_putstr(char *str)
 {
 	write(1, str, ft_strlen(str));
-}
-
-void		ft_putnbr(long n)
-{
-	char		c;
-
-	if (n < 0)
-	{
-		c = '-';
-		write(1, &c, 1);
-		n *= -1;
-	}
-	if (n >= 10)
-	{
-		ft_putnbr(n / 10);
-		c = n % 10 + '0';
-		write(1, &c, 1);
-	}
-	else if (n < 10)
-	{
-		c = n + '0';
-		write(1, &c, 1);
-	}
-}
-
-int			ft_strncmp(const char *s1, const char *s2, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	while (((((unsigned char *)s1)[i] ||
-			((unsigned char *)s2)[i])) &&
-			i < n &&
-			((unsigned char *)s1)[i] == ((unsigned char *)s2)[i])
-		i++;
-	if (i == n)
-		return (0);
-	return ((int)(((unsigned char *)s1)[i] - ((unsigned char *)s2)[i]));
 }

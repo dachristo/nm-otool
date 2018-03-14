@@ -19,7 +19,7 @@ CC = gcc
 SRCDIR = src
 
 CFILES = main.c ft_nm.c libft.c ft_data.c ft_sort.c ft_handle.c ft_display_64.c \
-            ft_display_32.c
+            ft_display_32.c check_error.c ft_fat.c ft_lib.c libft2.c ft_tools.c
 
 SRC = $(patsubst %, $(SRCDIR)/%, $(CFILES))
 
