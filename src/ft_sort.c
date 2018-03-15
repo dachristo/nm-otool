@@ -25,7 +25,7 @@ int			*ft_index(int *index, int start, int end)
 	return (index2);
 }
 
-int			ft_sort_alpha(char *s1, char *s2)
+int			ft_sort_alpha(char *s1, char *s2, t_options *options)
 {
 	char	*begin1;
 	char	*begin2;
@@ -36,17 +36,17 @@ int			ft_sort_alpha(char *s1, char *s2)
 	{
 		if (*s1 != *s2)
 		{
-			/*if ((ft_options(0, NULL, NULL) & FLAG_R))
+			if (options->flag_r == TRUE)
 				return ((*s1 < *s2) ? 1 : 0);
-			else*/
-			return ((*s1 > *s2) ? 1 : 0);
+			else
+				return ((*s1 > *s2) ? 1 : 0);
 		}
 		++s1;
 		++s2;
 	}
-	/*if ((ft_options(0, NULL, NULL) & FLAG_R))
+	if (options->flag_r == TRUE)
 		return ((!*s1 && *s2) ? 1 : 0);
-	else*/
+	else
 	return ((*s1 && !*s2) ? 1 : 0);
 }
 
@@ -71,7 +71,7 @@ static void	ft_data32(t_data32 *data, int start1, int end1, int end2)
 			data->index[i] = index2[c1++ - start1];
 		else if (!ft_sort_alpha(data->stringtable + \
 			data->array[index2[c1 - start1]].n_un.n_strx, \
-			data->stringtable + data->array[data->index[c2]].n_un.n_strx))
+			data->stringtable + data->array[data->index[c2]].n_un.n_strx, data->ptr_file->options))
 			data->index[i] = index2[c1++ - start1];
 		else
 			data->index[i] = data->index[c2++];
@@ -113,7 +113,7 @@ static void	ft_data(t_data *data, int start1, int end1, int end2)
 			data->index[i] = index2[c1++ - start1];
 		else if (!ft_sort_alpha(data->stringtable + \
 			data->array[index2[c1 - start1]].n_un.n_strx, \
-			data->stringtable + data->array[data->index[c2]].n_un.n_strx))
+			data->stringtable + data->array[data->index[c2]].n_un.n_strx, data->ptr_file->options))
 				data->index[i] = index2[c1++ - start1];
 		else
 			data->index[i] = data->index[c2++];

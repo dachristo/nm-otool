@@ -32,6 +32,7 @@ void	ft_sym32(struct symtab_command *sym, char **sec_str, t_file_ptr *ptr_file)
 	data.array = array;
 	data.index = index;
 	data.stringtable = stringtable;
+	data.ptr_file = ptr_file;
 //	if (!(ft_options(0, NULL, NULL) & FLAG_P))
 		ft_sort32(&data, 0, sym->nsyms - 1);
 	ft_print_out32(&data, sec_str, sym->nsyms);
@@ -58,6 +59,7 @@ void	ft_sym64(struct symtab_command *sym, char **sec_str, t_file_ptr *ptr_file)
 	data.array = array;
 	data.index = index;
 	data.stringtable = stringtable;
+	data.ptr_file = ptr_file;
  	if (ptr_file->options->flag_p != TRUE)
 		ft_sort64(&data, 0, sym->nsyms - 1);
 	ft_print_out64(&data, sec_str, sym->nsyms);

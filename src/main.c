@@ -67,7 +67,6 @@ int	main(int argc, char **argv)
 	else
 	{
 		i = ft_options(&options, argv, argc);
-		printf("%d, %d, %d\n", i, options.flag_p, options.flag_r);
 		while (++i < argc)
 		{
 			if (check_file(argv[i], argc, &options) == EXIT_FAILURE)

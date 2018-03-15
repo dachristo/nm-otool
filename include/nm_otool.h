@@ -37,20 +37,6 @@ typedef struct		s_options
 	int				n;
 }					t_options;
 
-typedef struct		s_data
-{
-    struct nlist_64	*array;
-    char			*stringtable;
-    int             *index;
-}					t_data;
-
-typedef struct		s_data32
-{
-	struct nlist	*array;
-	char			*stringtable;
-	int				*index;
-}					t_data32;
-
 typedef struct		s_file_ptr
 {
 	void			*ptr_free;
@@ -59,6 +45,24 @@ typedef struct		s_file_ptr
 	int				size;
 	t_options		*options;
 }					t_file_ptr;
+
+typedef struct		s_data
+{
+    struct nlist_64	*array;
+    char			*stringtable;
+    int             *index;
+	t_file_ptr		*ptr_file;
+}					t_data;
+
+typedef struct		s_data32
+{
+	struct nlist	*array;
+	char			*stringtable;
+	int				*index;
+	t_file_ptr		*ptr_file;
+}					t_data32;
+
+
 
 typedef struct		s_lib
 {
