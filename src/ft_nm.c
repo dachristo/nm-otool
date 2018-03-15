@@ -12,7 +12,7 @@
 
 #include "../include/nm_otool.h"
 
-static t_file_ptr	*save_ptr(char *ptr, int size, char *ptr_end)
+static t_file_ptr	*save_ptr(char *ptr, int size, char *ptr_end, t_options *options)
 {
 	t_file_ptr *ptr_file;
 
@@ -21,32 +21,33 @@ static t_file_ptr	*save_ptr(char *ptr, int size, char *ptr_end)
 	ptr_file->ptr = ptr;
 	ptr_file->ptr_end = ptr_end;
 	ptr_file->size = size;
+	ptr_file->options = options;
 
 	return (ptr_file);
 }
 
-static int	check_magic(char *ptr, struct stat buf, char *file, int argc)
+static int	check_magic(t_file_ptr *ptr_file, char *file, int argc)
 {
 	unsigned int magic_number;
 
-	magic_number = *(unsigned int *) ptr;
+	magic_number = *(unsigned int *)ptr_file->ptr;
 	if ((magic_number == MH_MAGIC_64 || magic_number == FAT_CIGAM ||
 		 magic_number == FAT_MAGIC || magic_number == MH_MAGIC ||
-		 !ft_strncmp(ptr, file, buf.st_size)) && argc > 2)
+		 !ft_strncmp(ptr_file->ptr, file, ptr_file->size)) && (argc - ptr_file->options->n) > 2)
 	{
 		ft_putchar('\n');
 		ft_putstr(file);
 		ft_putstr(":\n");
 	}
 	if (magic_number == MH_MAGIC_64)
-		ft_handle64((struct mach_header_64 *) ptr, save_ptr(ptr, buf.st_size, ptr + buf.st_size), -1, -1);
+		ft_handle64((struct mach_header_64 *)ptr_file->ptr, ptr_file, -1, -1);
 	if (magic_number == MH_MAGIC)
-		ft_handle32((struct mach_header *) ptr, save_ptr(ptr, buf.st_size, ptr + buf.st_size), -1, -1);
+		ft_handle32((struct mach_header *)ptr_file->ptr, ptr_file, -1, -1);
 	if (magic_number == FAT_CIGAM || magic_number == FAT_MAGIC)
-		ft_fat_handle((struct fat_header *)ptr, save_ptr(ptr, buf.st_size, ptr + buf.st_size), file);
-	if (!ft_strncmp(ptr, ARMAG, SARMAG))
-		ft_lib(save_ptr(ptr, buf.st_size, ptr + buf.st_size), file, buf.st_size);
-	if (munmap(ptr, buf.st_size) < 0)
+		ft_fat_handle((struct fat_header *)ptr_file->ptr, ptr_file, file);
+	if (!ft_strncmp(ptr_file->ptr, ARMAG, SARMAG))
+		ft_lib(ptr_file, file, ptr_file->size);
+	if (munmap(ptr_file->ptr, ptr_file->size) < 0)
 		return (EXIT_FAILURE);
 	return (0);
 }
@@ -59,7 +60,7 @@ static int	ft_is_file(const char *path)
 	return (S_ISREG(path_stat.st_mode));
 }
 
-int			check_file(char *file, int argc)
+int			check_file(char *file, int argc, t_options *options)
 {
 	int			fd;
 	struct stat	buf;
@@ -84,5 +85,5 @@ int			check_file(char *file, int argc)
 		perror("mmap");
 		return (0);
 	}
-	return (check_magic(ptr, buf, file, argc));
+	return (check_magic(save_ptr(ptr, buf.st_size, ptr + buf.st_size, options), file, argc));
 }

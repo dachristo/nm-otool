@@ -25,7 +25,7 @@ void	ft_fat_handle(t_fat_header *header, t_file_ptr *ptr_file, char *file)
 		if (ft_rev_int(arch->cputype) == CPU_TYPE_X86_64)
 			break ;
 		arch = (void*)arch + sizeof(*arch);
-		// check here
+		check_ptr(arch, "arch extends past the end of the file\n", ptr_file);
 	}
 	ptr_file->ptr = (void*)ptr_file->ptr + ft_rev_int(arch->offset);
 	if (*(unsigned int*)ptr_file->ptr == MH_MAGIC_64)

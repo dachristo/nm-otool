@@ -27,6 +27,15 @@
 # include <unistd.h>
 # include <string.h>
 # define FT_HEX "abcdef"
+# define TRUE 1
+# define FALSE 0
+
+typedef struct		s_options
+{
+	int				flag_r;
+	int				flag_p;
+	int				n;
+}					t_options;
 
 typedef struct		s_data
 {
@@ -48,6 +57,7 @@ typedef struct		s_file_ptr
 	void			*ptr;
 	void			*ptr_end;
 	int				size;
+	t_options		*options;
 }					t_file_ptr;
 
 typedef struct		s_lib
@@ -80,7 +90,7 @@ int				ft_isdigit(int c);
 /*
  * UTIL CHECK
  */
-int				check_file(char *file, int argc);
+int				check_file(char *file, int argc, t_options *options);
 void			check_ptr(void *ptr, char *error, t_file_ptr *file_ptr);
 
 /*

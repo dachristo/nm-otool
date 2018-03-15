@@ -40,7 +40,13 @@ static void		ft_print_name(char *file, void *str, int add)
 		n = header32->ncmds;
 	}
 	if (n > 1)
-		printf("\n%s(%s):\n", file, str);
+	{
+		ft_putstr("\n");
+		ft_putstr(file);
+		ft_putstr("(");
+		ft_putstr(str);
+		ft_putstr("):\n");
+	}
 }
 
 void			ft_lib(t_file_ptr *ptr_file, char *file, int size)
@@ -57,7 +63,7 @@ void			ft_lib(t_file_ptr *ptr_file, char *file, int size)
 	slib.arr_len = *(unsigned int*)(ptr_file->ptr - 4);
 	ptr_file->ptr += slib.arr_len;
 	i = -1;
-	while (++i < (int)slib.arr_len && ptr_file->ptr - ptr_file->ptr < ptr_file->size)
+	while (++i < (int)slib.arr_len && ptr_file->ptr - ptr_file->ptr < size)
 	{
 		ar = (struct ar_hdr*)ptr_file->ptr;
 		ptr_file->ptr += sizeof(struct ar_hdr);

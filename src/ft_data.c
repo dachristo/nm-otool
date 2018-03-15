@@ -58,7 +58,7 @@ void	ft_sym64(struct symtab_command *sym, char **sec_str, t_file_ptr *ptr_file)
 	data.array = array;
 	data.index = index;
 	data.stringtable = stringtable;
-// if (!(ft_options(0, NULL, NULL) & FLAG_P))
+ 	if (ptr_file->options->flag_p != TRUE)
 		ft_sort64(&data, 0, sym->nsyms - 1);
 	ft_print_out64(&data, sec_str, sym->nsyms);
 	free(index);

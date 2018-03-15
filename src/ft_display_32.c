@@ -51,7 +51,7 @@ static void	ft_put_indirect(t_data32 *data, int i)
 
 void		ft_print_out32(t_data32 *data, char **sec_str, int n)
 {
-	size_t i;
+	int i;
 
 	i = -1;
 	while (++i < n)
