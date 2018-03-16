@@ -12,7 +12,25 @@
 
 #include "../include/nm_otool.h"
 
-int	ft_options(t_options *options, char **argv, int argc)
+static void	check_options(t_options *options, char **argv, int i, int j)
+{
+	if (j != 0 && (argv[i][j] == 'p' || argv[i][j] == 'r'))
+	{
+		if (argv[i][j] == 'p')
+			options->flag_p = TRUE;
+		else if (argv[i][j] == 'r')
+			options->flag_r = TRUE;
+	}
+	else if (j != 0)
+	{
+		ft_putstr("Unknow command line argument '-");
+		ft_putchar(argv[i][j]);
+		ft_putstr("'.\n");
+		exit(1);
+	}
+}
+
+static int	ft_options(t_options *options, char **argv, int argc)
 {
 	int i;
 	int j;
@@ -31,20 +49,7 @@ int	ft_options(t_options *options, char **argv, int argc)
 			{
 				if (j == 0)
 					nb += 1;
-				if (j != 0 && (argv[i][j] == 'p' || argv[i][j] == 'r'))
-				{
-					if (argv[i][j] == 'p')
-						options->flag_p = TRUE;
-					else if (argv[i][j] == 'r')
-						options->flag_r = TRUE;
-				}
-				else if (j != 0)
-				{
-					ft_putstr("Unknow command line argument '-");
-					ft_putchar(argv[i][j]);
-					ft_putstr("'.\n");
-					exit(1);
-				}
+				check_options(options, argv, i, j);
 			}
 		}
 	}
@@ -52,11 +57,11 @@ int	ft_options(t_options *options, char **argv, int argc)
 	return (nb);
 }
 
-
-int	main(int argc, char **argv)
+int			main(int argc, char **argv)
 {
-	int i;
-	t_options options;
+	int			i;
+	int			result;
+	t_options	options;
 
 	i = 0;
 	if (argc == 1)
@@ -68,10 +73,9 @@ int	main(int argc, char **argv)
 	{
 		i = ft_options(&options, argv, argc);
 		while (++i < argc)
-		{
-			if (check_file(argv[i], argc, &options) == EXIT_FAILURE)
-				return (EXIT_FAILURE);
-		}
+			result = check_file(argv[i], argc, &options);
+		if (result == EXIT_FAILURE)
+			return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
 }

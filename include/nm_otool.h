@@ -30,6 +30,13 @@
 # define TRUE 1
 # define FALSE 0
 
+typedef struct		s_sort
+{
+	int				c1;
+	int				c2;
+	int				*index2;
+}					t_sort;
+
 typedef struct		s_options
 {
 	int				flag_r;
@@ -87,6 +94,7 @@ void			ft_putnbr(long n);
 int				ft_strcmp(const char *s1, const char *s2);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 void			ft_puthex(size_t n);
+int				ft_puthex_nb(size_t n, int i);
 char			*ft_strchr(const char *s, int c);
 int				ft_atoi(const char *str);
 int				ft_isdigit(int c);
@@ -95,37 +103,39 @@ int				ft_isdigit(int c);
  * UTIL CHECK
  */
 int				check_file(char *file, int argc, t_options *options);
-void			check_ptr(void *ptr, char *error, t_file_ptr *file_ptr);
+int				check_ptr(void *ptr, char *error, t_file_ptr *file_ptr);
 
 /*
  * MH MAGIC 64
  */
-void			ft_handle64(t_mach_header_64 *header, t_file_ptr *file_ptr, int i, int j);
-void			ft_sym64(struct symtab_command *sym, char **sec_str, t_file_ptr *ptr_file);
+int				ft_handle64(t_mach_header_64 *header, t_file_ptr *file_ptr, int i, int j);
+int				ft_sym64(struct symtab_command *sym, char **sec_str, t_file_ptr *ptr_file);
 void			ft_print_out64(t_data *data, char **sec_str, int n);
 void			ft_sort32(t_data32 *data, int start, int end);
 
 /*
  * MH MAGIC 32
  */
-void			ft_handle32(t_mach_header *header, t_file_ptr *file_ptr, int i, int j);
-void			ft_sym32(struct symtab_command *sym, char **sec_str, t_file_ptr *ptr_file);
+int				ft_handle32(t_mach_header *header, t_file_ptr *file_ptr, int i, int j);
+int				ft_sym32(struct symtab_command *sym, char **sec_str, t_file_ptr *ptr_file);
 void			ft_print_out32(t_data32 *data, char **sec_str, int n);
 void			ft_sort64(t_data *data, int start, int end);
 
 /*
  * LIB
  */
-void			ft_lib(t_file_ptr *ptr_file, char *file, int size);
+int				ft_lib(t_file_ptr *ptr_file, char *file, int size);
 
 /*
  * FAT
  */
-void			ft_fat_handle(t_fat_header *header, t_file_ptr *ptr_file, char *file);
+int				ft_fat_handle(t_fat_header *header, t_file_ptr *ptr_file, char *file);
 
 /*
  * TOOLS
  */
 unsigned int	ft_rev_int(unsigned int num);
+int				ft_sort_numeric(int val1, int val2, t_options *options);
+int				*ft_index(int *index, int start, int end);
 
 #endif

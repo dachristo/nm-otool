@@ -49,6 +49,15 @@ static void	ft_put_indirect(t_data32 *data, int i)
 	ft_putchar(')');
 }
 
+static void	ft_put_zero(size_t size)
+{
+	int nb;
+
+	nb = ft_puthex_nb(size, 1);
+	while (8 > nb++)
+		ft_putchar('0');
+}
+
 void		ft_print_out32(t_data32 *data, char **sec_str, int n)
 {
 	int i;
@@ -61,7 +70,10 @@ void		ft_print_out32(t_data32 *data, char **sec_str, int n)
 		if ((((data->array[data->index[i]].n_type & N_TYPE) != N_UNDF ||
 				data->array[data->index[i]].n_value) &&
 				(data->array[data->index[i]].n_type & N_TYPE) != N_INDR))
+		{
+			ft_put_zero(data->array[data->index[i]].n_value);
 			ft_puthex(data->array[data->index[i]].n_value);
+		}
 		else
 			ft_putstr("        ");
 		ft_put_sym_type_32(&data->array[data->index[i]], sec_str);

@@ -41,16 +41,16 @@ int			ft_strncmp(const char *s1, const char *s2, size_t n)
 
 	i = 0;
 	while (((((unsigned char *)s1)[i] ||
-			 ((unsigned char *)s2)[i])) &&
-		   i < n &&
-		   ((unsigned char *)s1)[i] == ((unsigned char *)s2)[i])
+			((unsigned char *)s2)[i])) &&
+		i < n &&
+		((unsigned char *)s1)[i] == ((unsigned char *)s2)[i])
 		i++;
 	if (i == n)
 		return (0);
 	return ((int)(((unsigned char *)s1)[i] - ((unsigned char *)s2)[i]));
 }
 
-int		ft_atoi(const char *str)
+int			ft_atoi(const char *str)
 {
 	int		i;
 	int		result;
@@ -79,7 +79,7 @@ int		ft_atoi(const char *str)
 	return (result * neg);
 }
 
-char	*ft_strchr(const char *s, int c)
+char		*ft_strchr(const char *s, int c)
 {
 	int		i;
 
@@ -89,7 +89,7 @@ char	*ft_strchr(const char *s, int c)
 	return (s[i] == '\0' ? NULL : (char *)&s[i]);
 }
 
-int		ft_isdigit(int c)
+int			ft_isdigit(int c)
 {
 	if (c >= 48 && c <= 57)
 		return (1);

@@ -1,26 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_error.c                                      :+:      :+:    :+:   */
+/*   libft3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dchristo <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/03/14 14:29:31 by dchristo          #+#    #+#             */
-/*   Updated: 2018/03/14 14:29:33 by dchristo         ###   ########.fr       */
+/*   Created: 2018/03/16 17:09:31 by dchristo          #+#    #+#             */
+/*   Updated: 2018/03/16 17:09:54 by dchristo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/nm_otool.h"
 
-int	check_ptr(void *ptr, char *error, t_file_ptr *ptr_file)
+int		ft_puthex_nb(size_t n, int i)
 {
-	if (ptr > ptr_file->ptr_end)
-	{
-		ft_putstr(error);
-		if (munmap(ptr_file->ptr_free, ptr_file->size) < 0)
-			return (1);
-		free(ptr_file);
-		return (1);
-	}
-	return (0);
+	if (n > 15)
+		i = ft_puthex_nb(n / 16, i + 1);
+	return (i);
 }

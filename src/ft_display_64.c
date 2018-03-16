@@ -49,6 +49,15 @@ static void	ft_put_indirect(t_data *data, int i)
 	ft_putchar(')');
 }
 
+static void	ft_put_zero(size_t size)
+{
+	int nb;
+
+	nb = ft_puthex_nb(size, 1);
+	while (16 > nb++)
+		ft_putchar('0');
+}
+
 void		ft_print_out64(t_data *data, char **sec_str, int n)
 {
 	int i;
@@ -62,7 +71,7 @@ void		ft_print_out64(t_data *data, char **sec_str, int n)
 				data->array[data->index[i]].n_value) &&
 				(data->array[data->index[i]].n_type & N_TYPE) != N_INDR))
 		{
-			ft_putstr("0000000");
+			ft_put_zero(data->array[data->index[i]].n_value);
 			ft_puthex(data->array[data->index[i]].n_value);
 		}
 		else

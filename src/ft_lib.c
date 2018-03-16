@@ -14,7 +14,6 @@
 
 static void		ft_sub_lib(t_file_ptr *ptr_file)
 {
-
 	if (*(unsigned int*)ptr_file->ptr == MH_MAGIC_64)
 		ft_handle64((struct mach_header_64*)ptr_file->ptr, ptr_file, -1, -1);
 	else
@@ -49,12 +48,10 @@ static void		ft_print_name(char *file, void *str, int add)
 	}
 }
 
-void			ft_lib(t_file_ptr *ptr_file, char *file, int size)
+t_lib			ft_init_slib(t_file_ptr *ptr_file, t_lib slib)
 {
 	struct ranlib	*lib;
 	struct ar_hdr	*ar;
-	int				i;
-	t_lib			slib;
 
 	slib.start = (void*)ptr_file->ptr + sizeof(struct ar_hdr) + SARMAG + 20;
 	slib.st_len = *(unsigned int*)slib.start / sizeof(struct ranlib);
@@ -62,15 +59,33 @@ void			ft_lib(t_file_ptr *ptr_file, char *file, int size)
 	ptr_file->ptr = (void*)lib + slib.st_len * sizeof(struct ranlib) + 4;
 	slib.arr_len = *(unsigned int*)(ptr_file->ptr - 4);
 	ptr_file->ptr += slib.arr_len;
+	return (slib);
+}
+
+int				ft_lib(t_file_ptr *ptr_file, char *file, int size)
+{
+	struct ar_hdr	*ar;
+	int				i;
+	t_lib			slib;
+
+	slib = ft_init_slib(ptr_file, slib);
+	if (check_ptr(ptr_file->ptr, "truncated or malformed object",
+				ptr_file) == 1)
+		return (1);
 	i = -1;
 	while (++i < (int)slib.arr_len && ptr_file->ptr - ptr_file->ptr < size)
 	{
 		ar = (struct ar_hdr*)ptr_file->ptr;
 		ptr_file->ptr += sizeof(struct ar_hdr);
-		ft_print_name(file, ptr_file->ptr, ft_atoi(ft_strchr(ar->ar_name, '/') + 1));
+		ft_print_name(file, ptr_file->ptr,
+					ft_atoi(ft_strchr(ar->ar_name, '/') + 1));
 		ptr_file->ptr += ft_atoi(ft_strchr(ar->ar_name, '/') + 1);
 		ft_sub_lib(ptr_file);
-		ptr_file->ptr += ft_atoi(ar->ar_size) - ft_atoi(ft_strchr(ar->ar_name, '/')\
-			+ 1);
+		ptr_file->ptr += ft_atoi(ar->ar_size) -
+				ft_atoi(ft_strchr(ar->ar_name, '/') + 1);
+		if (check_ptr(ptr_file->ptr, "truncated or malformed object",
+					ptr_file) == 1)
+			return (1);
 	}
+	return (0);
 }

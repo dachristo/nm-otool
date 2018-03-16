@@ -12,7 +12,7 @@
 
 #include "../include/nm_otool.h"
 
-void	ft_handle32(t_mach_header *header, t_file_ptr *ptr_file, int i, int j)
+int	ft_handle32(t_mach_header *header, t_file_ptr *ptr_file, int i, int j)
 {
 	int					k;
 	struct load_command	*lc;
@@ -24,23 +24,25 @@ void	ft_handle32(t_mach_header *header, t_file_ptr *ptr_file, int i, int j)
 		if (lc->cmd == LC_SEGMENT)
 		{
 			k = -1;
-			while (++k < (int) ((struct segment_command *) lc)->nsects)
-			{
-				sec_str[++j] = ((struct section *) ((void *) lc + \
-                sizeof(struct segment_command)))[k].sectname;
-			}
+			while (++k < (int)((struct segment_command *)lc)->nsects)
+				sec_str[++j] = ((struct section *)((void *)lc + \
+				sizeof(struct segment_command)))[k].sectname;
 		}
 		if (lc->cmd == LC_SYMTAB)
 		{
-			ft_sym32((struct symtab_command*)lc, sec_str, ptr_file);
-			break ;
+			if (ft_sym32((struct symtab_command*)lc, sec_str, ptr_file) == 1)
+				return (1);
+			return (0);
 		}
 		lc = (void *)lc + lc->cmdsize;
-		check_ptr(lc, "LC_SEGMENT cmdsize extends past the end of the file\n", ptr_file);
+		if (check_ptr(lc, "extends past the end of the file\n", ptr_file) == 1)
+			return (1);
 	}
+	return (0);
 }
 
-void	ft_handle64(t_mach_header_64 *header, t_file_ptr *ptr_file, int i, int j)
+int	ft_handle64(t_mach_header_64 *header, t_file_ptr *ptr_file,
+					int i, int j)
 {
 	int					k;
 	struct load_command	*lc;
@@ -53,17 +55,18 @@ void	ft_handle64(t_mach_header_64 *header, t_file_ptr *ptr_file, int i, int j)
 		{
 			k = -1;
 			while (++k < (int)((struct segment_command_64 *)lc)->nsects)
-			{
-				sec_str[++j] = ((struct section_64 *) ((void *) lc + \
-                sizeof(struct segment_command_64)))[k].sectname;
-			}
+				sec_str[++j] = ((struct section_64 *)((void *)lc + \
+				sizeof(struct segment_command_64)))[k].sectname;
 		}
 		if (lc->cmd == LC_SYMTAB)
 		{
-			ft_sym64((struct symtab_command *)lc, sec_str, ptr_file);
-			break ;
+			if (ft_sym64((struct symtab_command *)lc, sec_str, ptr_file) == 1)
+				return (1);
+			return (0);
 		}
 		lc = (void *)lc + lc->cmdsize;
-		check_ptr(lc, "LC_SEGMENT_64 cmdsize extends past the end of the file\n", ptr_file);
+		if (check_ptr(lc, "extends past the end of the file\n", ptr_file) == 1)
+			return (1);
 	}
+	return (1);
 }
