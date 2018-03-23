@@ -48,10 +48,10 @@ static void		ft_print_name(char *file, void *str, int add)
 	}
 }
 
-t_lib			ft_init_slib(t_file_ptr *ptr_file, t_lib slib)
+t_lib			ft_init_slib(t_file_ptr *ptr_file)
 {
 	struct ranlib	*lib;
-	struct ar_hdr	*ar;
+	t_lib			slib;
 
 	slib.start = (void*)ptr_file->ptr + sizeof(struct ar_hdr) + SARMAG + 20;
 	slib.st_len = *(unsigned int*)slib.start / sizeof(struct ranlib);
@@ -68,7 +68,7 @@ int				ft_lib(t_file_ptr *ptr_file, char *file, int size)
 	int				i;
 	t_lib			slib;
 
-	slib = ft_init_slib(ptr_file, slib);
+	slib = ft_init_slib(ptr_file);
 	if (check_ptr(ptr_file->ptr, "truncated or malformed object",
 				ptr_file) == 1)
 		return (1);

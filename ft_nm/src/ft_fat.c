@@ -15,7 +15,6 @@
 int	ft_fat_handle(t_fat_header *header, t_file_ptr *ptr_file, char *file)
 {
 	struct fat_arch		*arch;
-	char				*newptr;
 	int					i;
 
 	arch = (void*)ptr_file->ptr + sizeof(*header);
