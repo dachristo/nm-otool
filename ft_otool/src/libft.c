@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/nm_otool.h"
+#include "../include/otool.h"
 
 static int	ft_strlen(char *str)
 {
@@ -49,11 +49,6 @@ int			ft_strcmp(const char *s1, const char *s2)
 		++i;
 	}
 	return ((int)(((unsigned char *)s1)[i] - ((unsigned char *)s2)[i]));
-}
-
-void		ft_putchar(char c)
-{
-	write(1, &c, 1);
 }
 
 void		ft_putstr(char *str)

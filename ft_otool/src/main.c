@@ -10,50 +10,67 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "otool.h"
+#include "../include/otool.h"
 
-void	otool(char *ptr, char *name, int size)
+static void	check_options(t_options *options, char **argv, int i, int j)
 {
-	int		magic_number;
-
-	magic_number = *(int *)ptr;
-	if (magic_number == (int)MH_MAGIC_64)
-		handle_64(ptr, name, 0);
-	else if (magic_number == (int)MH_MAGIC)
-		handle(ptr, name, 0);
-	else if (magic_number == (int)FAT_CIGAM || magic_number == (int)FAT_MAGIC)
-		fat(ptr, (struct fat_header*)ptr, name);
-	else if (!ft_strncmp(ptr, ARMAG, SARMAG))
-		handle_lib(ptr, name, size);
-	else
-		ft_error_object(name);
+	if (j != 0 && (argv[i][j] == 'd' || argv[i][j] == 'f'))
+	{
+		if (argv[i][j] == 'd')
+			options->flag_d = TRUE;
+		else if (argv[i][j] == 'f')
+			options->flag_f = TRUE;
+	}
+	else if (j != 0)
+	{
+		ft_putstr("Unknow char`");
+		ft_putchar(argv[i][j]);
+		ft_putstr("' in flag -");
+		ft_putchar(argv[i][j]);
+		ft_putstr("\n");
+		exit(1);
+	}
 }
 
-int		main(int ac, char **av)
+static int	ft_options(t_options *options, char **argv, int argc)
 {
-	int				fd;
-	struct stat		buf;
-	char			*ptr;
-	int				i;
-	unsigned int	flag;
+	int i;
+	int j;
+	int nb;
 
-	if ((i = ft_flags(av)) == -1)
-		return (-1);
-	flag = get_flags(0);
-	while (i < ac)
+	i = 0;
+	nb = 0;
+	options->flag_d = FALSE;
+	options->flag_f = FALSE;
+	while (++i < argc)
 	{
-		if ((fd = open(av[i], O_RDONLY)) < 0)
+		j = -1;
+		while (argv[i][++j] != '\0')
 		{
-			ft_error_open(av[0], av[i++]);
-			continue;
+			if (argv[i][0] == '-')
+			{
+				if (j == 0)
+					nb += 1;
+				check_options(options, argv, i, j);
+			}
 		}
-		if (fstat(fd, &buf) < 0 || (ptr = mmap(0, buf.st_size, PROT_READ,
-						MAP_PRIVATE, fd, 0)) == MAP_FAILED)
-			ft_error_object(av[i++]);
-		else
-			otool(ptr, av[i++], buf.st_size);
-		if (munmap(ptr, buf.st_size) < 0)
-			return (-1);
 	}
-	return (0);
+	options->n = nb;
+	return (nb);
+}
+
+int		main(int argc, char **argv)
+{
+	int				i;
+	int			result;
+	t_options	options;
+
+	i = ft_options(&options, argv, argc);
+	while (++i < argc)
+	{
+		result = check_file(argv[i], &options);
+		if (result == EXIT_FAILURE)
+			return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
 }
