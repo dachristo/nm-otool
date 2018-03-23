@@ -72,6 +72,9 @@ int			main(int argc, char **argv)
 	else
 	{
 		i = ft_options(&options, argv, argc);
+		if (i + 1 == argc)
+			if (check_file("a.out", argc, &options) == EXIT_FAILURE)
+				return (EXIT_FAILURE);
 		while (++i < argc)
 			result = check_file(argv[i], argc, &options);
 		if (result == EXIT_FAILURE)
