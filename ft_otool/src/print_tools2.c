@@ -1,19 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_error.c                                         :+:      :+:    :+:   */
+/*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kperreau <kperreau@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2015/09/22 17:06:19 by kperreau          #+#    #+#             */
-/*   Updated: 2015/09/22 23:33:50 by kperreau         ###   ########.fr       */
+/*   Created: 2015/09/22 17:07:21 by kperreau          #+#    #+#             */
+/*   Updated: 2015/09/23 17:17:35 by kperreau         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/otool.h"
 
-void		ft_error_object(char *s)
+void	ft_put_zero(size_t size, int arch)
 {
-	ft_putstr_fd(s, 1);
-	ft_putstr_fd(": is not an object file\n", 1);
+	int nb;
+
+	nb = ft_puthex_nb(size, 1);
+	while (arch > nb++)
+		ft_putchar('0');
 }

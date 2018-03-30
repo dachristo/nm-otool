@@ -13,7 +13,7 @@
 #include "../include/otool.h"
 
 static t_file_ptr	*save_ptr(char *ptr, int size, char *ptr_end,
-							   t_options *options)
+							t_options *options)
 {
 	t_file_ptr *ptr_file;
 
@@ -52,10 +52,10 @@ static int			check_magic(t_file_ptr *ptr_file, char *file)
 	else if (magic_number == FAT_CIGAM || magic_number == FAT_MAGIC)
 	{
 		return (ft_fat_handle((struct fat_header *)ptr_file->ptr,
-							  ptr_file, file));
+							ptr_file, file));
 	}
 	else if (!ft_strncmp(ptr_file->ptr, ARMAG, SARMAG))
-		return (ft_lib(ptr_file, file, ptr_file->size));
+		ft_lib(ptr_file, ptr_file->ptr, file, ptr_file->size);
 	else
 		ft_error_object(file);
 	return (0);

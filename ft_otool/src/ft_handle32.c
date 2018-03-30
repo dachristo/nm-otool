@@ -13,7 +13,7 @@
 #include "../include/otool.h"
 
 static void			treatment(struct segment_command *segment,
-								 char *ptr, char *file, int lib)
+								char *ptr, char *file, int lib)
 {
 	t_section			*section;
 	int					j;
@@ -32,7 +32,7 @@ static void			treatment(struct segment_command *segment,
 }
 
 static void			treatment_data(struct segment_command *segment,
-									  char *ptr, char *file, int lib)
+									char *ptr, char *file, int lib)
 {
 	t_section			*section;
 	int					j;
@@ -50,18 +50,17 @@ static void			treatment_data(struct segment_command *segment,
 	segment = (void *)segment + segment->cmdsize;
 }
 
-int	ft_handle32(t_mach_header *header, t_file_ptr *ptr_file, char *file, int lib)
+int					ft_handle32(t_mach_header *header, t_file_ptr *ptr_file,
+								char *file, int lib)
 {
-	int					i;
-	struct load_command	*lc;
-	struct segment_command	*segment;
+	int						i;
+	struct load_command		*lc;
 
 	i = -1;
 	lc = (void *)ptr_file->ptr + sizeof(*header);
 	while (++i < (int)header->ncmds)
 	{
-		segment = (struct segment_command*)lc;
-		treatment(segment, ptr_file->ptr, file, lib);
+		treatment((struct segment_command*)lc, ptr_file->ptr, file, lib);
 		lc = (void *)lc + lc->cmdsize;
 		if (ptr_file->options->flag_d == TRUE)
 		{
@@ -69,14 +68,13 @@ int	ft_handle32(t_mach_header *header, t_file_ptr *ptr_file, char *file, int lib
 			lc = (void *)ptr_file->ptr + sizeof(struct mach_header);
 			while (i++ < (int)header->ncmds)
 			{
-				segment = (struct segment_command*)lc;
-				treatment_data(segment, ptr_file->ptr, file, -1);
+				treatment_data((struct segment_command*)lc, ptr_file->ptr,
+							file, -1);
 				lc = (void *)lc + lc->cmdsize;
 			}
 		}
 		if (check_ptr(lc, "extends past the end of the file\n", ptr_file) == 1)
 			return (1);
 	}
-	return (1);
+	return (0);
 }
-

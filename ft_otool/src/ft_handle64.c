@@ -32,7 +32,7 @@ static void			treatment_64(struct segment_command_64 *segment,
 }
 
 static void			treatment_64_data(struct segment_command_64 *segment,
-										 char *ptr, char *file, int lib)
+										char *ptr, char *file, int lib)
 {
 	int					j;
 	struct section_64	*section;
@@ -50,19 +50,17 @@ static void			treatment_64_data(struct segment_command_64 *segment,
 	segment = (void *)segment + segment->cmdsize;
 }
 
-
-int	ft_handle64(t_mach_header_64 *header, t_file_ptr *ptr_file, char *file, int lib)
+int					ft_handle64(t_mach_header_64 *header, t_file_ptr *ptr_file,
+								char *file, int lib)
 {
 	int					i;
 	struct load_command	*lc;
-	struct segment_command_64	*segment;
 
 	i = -1;
 	lc = (void *)ptr_file->ptr + sizeof(*header);
 	while (++i < (int)header->ncmds)
 	{
-		segment = (struct segment_command_64*)lc;
-		treatment_64(segment, ptr_file->ptr, file, lib);
+		treatment_64((struct segment_command_64*)lc, ptr_file->ptr, file, lib);
 		lc = (void *)lc + lc->cmdsize;
 		if (ptr_file->options->flag_d == TRUE)
 		{
@@ -70,13 +68,13 @@ int	ft_handle64(t_mach_header_64 *header, t_file_ptr *ptr_file, char *file, int 
 			lc = (void *)ptr_file->ptr + sizeof(struct mach_header_64);
 			while (i++ < (int)header->ncmds)
 			{
-				segment = (struct segment_command_64*)lc;
-				treatment_64_data(segment, ptr_file->ptr, file, -1);
+				treatment_64_data((struct segment_command_64*)lc, ptr_file->ptr,
+								file, -1);
 				lc = (void *)lc + lc->cmdsize;
 			}
 		}
 		if (check_ptr(lc, "extends past the end of the file\n", ptr_file) == 1)
 			return (1);
 	}
-	return (1);
+	return (0);
 }

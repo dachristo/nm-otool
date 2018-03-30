@@ -19,12 +19,12 @@ int		ft_puthex_nb(size_t n, int i)
 	return (i);
 }
 
-void		ft_putchar(char c)
+void	ft_putchar(char c)
 {
 	write(1, &c, 1);
 }
 
-void		ft_puthex2(size_t n)
+void	ft_puthex2(size_t n)
 {
 	char		c;
 

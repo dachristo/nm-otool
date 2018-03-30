@@ -16,20 +16,34 @@ static void			print_head_data_64(struct section_64 *section, char *name,
 		int print)
 {
 	if (print == 0)
-		printf("%s:\n", name);
-	printf("(%s,%s) section\n", section->segname, section->sectname);
+	{
+		ft_putstr(name);
+		ft_putstr(":\n");
+	}
+	ft_putstr("Contents of (");
+	ft_putstr(section->segname);
+	ft_putstr(",");
+	ft_putstr(section->sectname);
+	ft_putstr(") section\n");
 	if (section->size != 0)
-		printf("%.16llx\t", section->addr);
+		ft_print_hex(section->addr, 16, " \n", "\t");
 }
 
 static void			print_head_data(struct section *section, char *name,
 		int print)
 {
 	if (print == 0)
-		printf("%s:\n", name);
-	printf("(%s,%s) section\n", section->segname, section->sectname);
+	{
+		ft_putstr(name);
+		ft_putstr(":\n");
+	}
+	ft_putstr("Contents of (");
+	ft_putstr(section->segname);
+	ft_putstr(",");
+	ft_putstr(section->sectname);
+	ft_putstr(") section\n");
 	if (section->size != 0)
-		printf("%.8x\t", section->addr);
+		ft_print_hex(section->addr, 8, "", "\t");
 }
 
 void				print_hex_data_64(char *ptr, struct section_64 *section,
@@ -45,9 +59,9 @@ void				print_hex_data_64(char *ptr, struct section_64 *section,
 	while (k < (int)section->size)
 	{
 		c = *(ptr + (int)(section->offset) + k++);
-		printf("%.2hhx", c);
+		ft_print_section(c);
 		if (k % 16 == 0 && k != (int)section->size)
-			printf(" \n%.16llx\t", section->addr + k);
+			ft_print_hex(section->addr + k, 16, " \n", "\t");
 		else
 			ft_putchar(' ');
 	}
@@ -61,15 +75,15 @@ void				print_hex_data(char *ptr, struct section *section,
 	int		k;
 	char	c;
 
-	printf("IN 32\n");
+	ft_putstr("IN 32\n");
 	k = 0;
 	print_head_data(section, name, print);
 	while (k < (int)section->size)
 	{
 		c = *(ptr + (int)(section->offset) + k++);
-		printf("%.2hhx", c);
+		ft_print_section(c);
 		if (k % 16 == 0 && k != (int)section->size)
-			printf(" \n%.8x\t", section->addr + k);
+			ft_print_hex(section->addr + k, 8, " \n", "\t");
 		else
 			ft_putchar(' ');
 	}

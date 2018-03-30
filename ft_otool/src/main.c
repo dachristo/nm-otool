@@ -59,9 +59,9 @@ static int	ft_options(t_options *options, char **argv, int argc)
 	return (nb);
 }
 
-int		main(int argc, char **argv)
+int			main(int argc, char **argv)
 {
-	int				i;
+	int			i;
 	int			result;
 	t_options	options;
 

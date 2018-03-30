@@ -18,9 +18,9 @@ CFLAGS = -Wall -Wextra -Werror
 
 SRCDIR = src
 
-CFILES = main.c ft_fat.c ft_lib.c ft_handle32.c ft_otool.c ft_error.c ft_tools.c \
-        check_error.c libft.c libft2.c libft3.c ft_display_32.c ft_display_64.c \
-        print.c print_data.c ft_handle64.c
+CFILES = main.c ft_fat.c ft_lib.c ft_handle32.c ft_otool.c ft_error.c \
+        ft_tools.c check_error.c libft.c libft2.c libft3.c print.c \
+        print_data.c ft_handle64.c print_tools.c print_tools2.c
 
 SRC = $(patsubst %, $(SRCDIR)/%, $(CFILES))
 
