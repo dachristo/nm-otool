@@ -18,3 +18,8 @@ int		ft_puthex_nb(size_t n, int i)
 		i = ft_puthex_nb(n / 16, i + 1);
 	return (i);
 }
+
+void	ft_putchar(char c)
+{
+	write(1, &c, 1);
+}

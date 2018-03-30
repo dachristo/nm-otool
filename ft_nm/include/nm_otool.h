@@ -14,7 +14,7 @@
 # define NM_OTOOL_H
 
 # include <stdio.h>
-#include <errno.h>
+# include <errno.h>
 # include <sys/mman.h>
 # include <mach-o/loader.h>
 # include <mach-o/nlist.h>
@@ -55,9 +55,9 @@ typedef struct		s_file_ptr
 
 typedef struct		s_data
 {
-    struct nlist_64	*array;
-    char			*stringtable;
-    int             *index;
+	struct nlist_64	*array;
+	char			*stringtable;
+	int				*index;
 	t_file_ptr		*ptr_file;
 }					t_data;
 
@@ -68,8 +68,6 @@ typedef struct		s_data32
 	int				*index;
 	t_file_ptr		*ptr_file;
 }					t_data32;
-
-
 
 typedef struct		s_lib
 {
@@ -86,56 +84,61 @@ typedef struct nlist_64			t_nlist_64;
 typedef struct nlist			t_nlist;
 
 /*
- * LIBFT
- */
-void			ft_putstr(char *str);
-void 			ft_putchar(char c);
-void			ft_putnbr(long n);
-int				ft_strcmp(const char *s1, const char *s2);
-int				ft_strncmp(const char *s1, const char *s2, size_t n);
-void			ft_puthex(size_t n);
-int				ft_puthex_nb(size_t n, int i);
-char			*ft_strchr(const char *s, int c);
-int				ft_atoi(const char *str);
-int				ft_isdigit(int c);
+** LIBFT
+*/
+void				ft_putstr(char *str);
+void				ft_putchar(char c);
+void				ft_putnbr(long n);
+int					ft_strcmp(const char *s1, const char *s2);
+int					ft_strncmp(const char *s1, const char *s2, size_t n);
+void				ft_puthex(size_t n);
+int					ft_puthex_nb(size_t n, int i);
+char				*ft_strchr(const char *s, int c);
+int					ft_atoi(const char *str);
+int					ft_isdigit(int c);
 
 /*
- * UTIL CHECK
- */
-int				check_file(char *file, int argc, t_options *options);
-int				check_ptr(void *ptr, char *error, t_file_ptr *file_ptr);
+** UTIL CHECK
+*/
+int					check_file(char *file, int argc, t_options *options);
+int					check_ptr(void *ptr, char *error, t_file_ptr *file_ptr);
 
 /*
- * MH MAGIC 64
- */
-int				ft_handle64(t_mach_header_64 *header, t_file_ptr *file_ptr, int i, int j);
-int				ft_sym64(struct symtab_command *sym, char **sec_str, t_file_ptr *ptr_file);
-void			ft_print_out64(t_data *data, char **sec_str, int n);
-void			ft_sort32(t_data32 *data, int start, int end);
+** MH MAGIC 64
+*/
+int					ft_handle64(t_mach_header_64 *header, t_file_ptr *file_ptr,
+								int i, int j);
+int					ft_sym64(struct symtab_command *sym, char **sec_str,
+								t_file_ptr *ptr_file);
+void				ft_print_out64(t_data *data, char **sec_str, int n);
+void				ft_sort32(t_data32 *data, int start, int end);
 
 /*
- * MH MAGIC 32
- */
-int				ft_handle32(t_mach_header *header, t_file_ptr *file_ptr, int i, int j);
-int				ft_sym32(struct symtab_command *sym, char **sec_str, t_file_ptr *ptr_file);
-void			ft_print_out32(t_data32 *data, char **sec_str, int n);
-void			ft_sort64(t_data *data, int start, int end);
+** MH MAGIC 32
+*/
+int					ft_handle32(t_mach_header *header, t_file_ptr *file_ptr,
+								int i, int j);
+int					ft_sym32(struct symtab_command *sym, char **sec_str,
+								t_file_ptr *ptr_file);
+void				ft_print_out32(t_data32 *data, char **sec_str, int n);
+void				ft_sort64(t_data *data, int start, int end);
 
 /*
- * LIB
- */
-int				ft_lib(t_file_ptr *ptr_file, char *file, int size);
+** LIB
+*/
+int					ft_lib(t_file_ptr *ptr_file, char *file, int size);
 
 /*
- * FAT
- */
-int				ft_fat_handle(t_fat_header *header, t_file_ptr *ptr_file, char *file);
+** FAT
+*/
+int					ft_fat_handle(t_fat_header *header, t_file_ptr *ptr_file,
+									char *file);
 
 /*
- * TOOLS
- */
-unsigned int	ft_rev_int(unsigned int num);
-int				ft_sort_numeric(int val1, int val2, t_options *options);
-int				*ft_index(int *index, int start, int end);
+** TOOLS
+*/
+unsigned int		ft_rev_int(unsigned int num);
+int					ft_sort_numeric(int val1, int val2, t_options *options);
+int					*ft_index(int *index, int start, int end);
 
 #endif

@@ -51,17 +51,12 @@ int			ft_strcmp(const char *s1, const char *s2)
 	return ((int)(((unsigned char *)s1)[i] - ((unsigned char *)s2)[i]));
 }
 
-void		ft_putchar(char c)
+void		ft_putstr_fd(char *str, int fd)
 {
-	write(1, &c, 1);
+	write(fd, str, ft_strlen(str));
 }
 
 void		ft_putstr(char *str)
 {
 	write(1, str, ft_strlen(str));
-}
-
-void		ft_putstr_fd(char *str, int fd)
-{
-	write(fd, str, ft_strlen(str));
 }

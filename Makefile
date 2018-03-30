@@ -6,7 +6,7 @@
 #    By: dchristo <dchristo@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/23 13:25:22 by dchristo          #+#    #+#              #
-#    Updated: 2018/03/23 19:13:24 by dchristo         ###   ########.fr        #
+#    Updated: 2018/03/30 14:50:33 by dchristo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ nm:
 	@make -C ft_nm/
 
 otool:
-	@make -C otool/
+	@make -C ft_otool/
 
 re: fclean all
 
