@@ -24,3 +24,16 @@ int	check_ptr(void *ptr, char *error, t_file_ptr *ptr_file)
 	}
 	return (0);
 }
+
+int	check_lc(int cmdsize, int i, int ncmds, t_file_ptr *ptr_file)
+{
+	if (cmdsize == 0 && i + 1 != ncmds)
+	{
+		ft_putstr("File truncated or malformed object (load comand 0 cmdsize not a multiple of 8\n");
+		if (munmap(ptr_file->ptr_free, ptr_file->size) < 0)
+			return (1);
+		free(ptr_file);
+		return (1);
+	}
+	return (0);
+}

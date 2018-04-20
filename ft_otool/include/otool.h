@@ -84,6 +84,7 @@ int					ft_isdigit(int c);
 */
 int					check_file(char *file, t_options *options);
 int					check_ptr(void *ptr, char *error, t_file_ptr *file_ptr);
+int					check_lc(int cmdsize, int i, int ncmds, t_file_ptr *ptr_file);
 
 /*
 ** MH MAGIC 64
@@ -145,6 +146,5 @@ void				print_head_64(struct section_64 *section, char *name,
 								int print);
 void				ft_print_hex(size_t size, int arch, char *start, char *end);
 void				ft_print_section(unsigned int size);
-
 
 #endif

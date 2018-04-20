@@ -12,8 +12,8 @@
 
 #include "../include/otool.h"
 
-static void			treatment_64(struct segment_command_64 *segment,
-									char *ptr, char *file, int lib)
+static int			treatment_64(struct segment_command_64 *segment,
+									t_file_ptr *ptr_file, char *file, int lib)
 {
 	int					j;
 	struct section_64	*section;
@@ -25,14 +25,17 @@ static void			treatment_64(struct segment_command_64 *segment,
 		while (++j < (int)segment->nsects)
 		{
 			if (!ft_strcmp(section[j].sectname, SECT_TEXT))
-				print_hex_64(ptr, &section[j], file, lib);
+				print_hex_64(ptr_file->ptr, &section[j], file, lib);
 		}
 	}
 	segment = (void *)segment + segment->cmdsize;
+	if (check_ptr(segment, "extends past the end of the file\n", ptr_file) == 1)
+		return (1);
+	return (0);
 }
 
-static void			treatment_64_data(struct segment_command_64 *segment,
-										char *ptr, char *file, int lib)
+static int		treatment_64_data(struct segment_command_64 *segment,
+									t_file_ptr *ptr_file, char *file, int lib)
 {
 	int					j;
 	struct section_64	*section;
@@ -44,10 +47,13 @@ static void			treatment_64_data(struct segment_command_64 *segment,
 		while (++j < (int)segment->nsects)
 		{
 			if (!ft_strcmp(section[j].sectname, SECT_DATA))
-				print_hex_data_64(ptr, &section[j], file, lib);
+				print_hex_data_64(ptr_file->ptr, &section[j], file, lib);
 		}
 	}
 	segment = (void *)segment + segment->cmdsize;
+	if (check_ptr(segment, "extends past the end of the file\n", ptr_file) == 1)
+		return (1);
+	return (0);
 }
 
 int					ft_handle64(t_mach_header_64 *header, t_file_ptr *ptr_file,
@@ -60,7 +66,8 @@ int					ft_handle64(t_mach_header_64 *header, t_file_ptr *ptr_file,
 	lc = (void *)ptr_file->ptr + sizeof(*header);
 	while (++i < (int)header->ncmds)
 	{
-		treatment_64((struct segment_command_64*)lc, ptr_file->ptr, file, lib);
+		if (treatment_64((struct segment_command_64*)lc, ptr_file, file, lib) == 1)
+			return (1);
 		lc = (void *)lc + lc->cmdsize;
 		if (ptr_file->options->flag_d == TRUE)
 		{
@@ -68,12 +75,16 @@ int					ft_handle64(t_mach_header_64 *header, t_file_ptr *ptr_file,
 			lc = (void *)ptr_file->ptr + sizeof(struct mach_header_64);
 			while (i++ < (int)header->ncmds)
 			{
-				treatment_64_data((struct segment_command_64*)lc, ptr_file->ptr,
-								file, -1);
+				if (treatment_64_data((struct segment_command_64*)lc, ptr_file,
+								file, -1) == 1)
+					return (1);
 				lc = (void *)lc + lc->cmdsize;
+				if (check_ptr(lc, "extends past the end of the file\n", ptr_file) == 1)
+					return (1);
 			}
 		}
-		if (check_ptr(lc, "extends past the end of the file\n", ptr_file) == 1)
+		if (check_ptr(lc, "extends past the end of the file\n", ptr_file) == 1 ||
+				(check_lc(lc->cmdsize, i, (int)header->ncmds, ptr_file) == 1))
 			return (1);
 	}
 	return (0);

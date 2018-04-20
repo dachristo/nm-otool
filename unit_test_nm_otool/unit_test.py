@@ -8,9 +8,11 @@ import textwrap
 
 # absolute path to your nm_otool project
 PROJECT_PATH = '/Users/dchristo/14_2018/nm-otool/'
+PROJECT_PATH_NM = '/Users/dchristo/14_2018/nm-otool/ft_nm'
+PROJECT_PATH_OTOOL = '/Users/dchristo/14_2018/nm-otool/ft_otool'
 
-NM_PATH = os.path.join(PROJECT_PATH, 'ft_nm')
-OTOOL_PATH = os.path.join(PROJECT_PATH, 'ft_otool')
+NM_PATH = os.path.join(PROJECT_PATH_NM, 'ft_nm')
+OTOOL_PATH = os.path.join(PROJECT_PATH_OTOOL, 'ft_otool')
 
 
 def execute(cmd):
