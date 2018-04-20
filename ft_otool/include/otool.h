@@ -85,6 +85,7 @@ int					ft_isdigit(int c);
 int					check_file(char *file, t_options *options);
 int					check_ptr(void *ptr, char *error, t_file_ptr *file_ptr);
 int					check_lc(int cmdsize, int i, int ncmds, t_file_ptr *ptr_file);
+int					check_fat(void *ptr, t_file_ptr *ptr_file);
 
 /*
 ** MH MAGIC 64

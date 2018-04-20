@@ -37,3 +37,17 @@ int	check_lc(int cmdsize, int i, int ncmds, t_file_ptr *ptr_file)
 	}
 	return (0);
 }
+
+int	check_fat(void *ptr, t_file_ptr *ptr_file)
+{
+	if (*(unsigned int*)ptr == FAT_CIGAM || *(unsigned int*)ptr == FAT_MAGIC)
+	{
+		ft_putstr("truncated or malformed fat file (offset plus size of cputype"
+						  " (18) cpusubtype (0) extends past the end of the file)\n");
+		if (munmap(ptr_file->ptr_free, ptr_file->size) < 0)
+			return (1);
+		free(ptr_file);
+		return (1);
+	}
+	return (0);
+}

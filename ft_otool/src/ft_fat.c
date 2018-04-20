@@ -99,5 +99,7 @@ int					ft_fat_handle(t_fat_header *header,
 		handle_fat(ptr_file, ptr_file->ptr, header, file);
 	else if (!ft_strncmp(ptr_file->ptr, ARMAG, SARMAG))
 		ft_lib(ptr_file, ptr_file->ptr, file, ft_rev_int(arch->size));
+	else if (check_fat(ptr_file->ptr, ptr_file) == 1)
+		return (1);
 	return (0);
 }
