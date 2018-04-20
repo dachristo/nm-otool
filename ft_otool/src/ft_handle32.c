@@ -72,6 +72,7 @@ static int		handle_flag_d(struct load_command	*lc, t_file_ptr *ptr_file,
 		if (check_ptr(lc, "extends past the end of the file\n", ptr_file) == 1)
 			return (1);
 	}
+	return (0);
 }
 
 int				ft_handle32(t_mach_header *header, t_file_ptr *ptr_file,
