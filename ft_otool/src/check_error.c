@@ -29,7 +29,8 @@ int	check_lc(int cmdsize, int i, int ncmds, t_file_ptr *ptr_file)
 {
 	if (cmdsize == 0 && i + 1 != ncmds)
 	{
-		ft_putstr("File truncated or malformed object (load comand 0 cmdsize not a multiple of 8\n");
+		ft_putstr("File truncated or malformed object "
+						"(load comand 0 cmdsize not a multiple of 8\n");
 		if (munmap(ptr_file->ptr_free, ptr_file->size) < 0)
 			return (1);
 		free(ptr_file);
@@ -43,7 +44,8 @@ int	check_fat(void *ptr, t_file_ptr *ptr_file)
 	if (*(unsigned int*)ptr == FAT_CIGAM || *(unsigned int*)ptr == FAT_MAGIC)
 	{
 		ft_putstr("truncated or malformed fat file (offset plus size of cputype"
-						  " (18) cpusubtype (0) extends past the end of the file)\n");
+						" (18) cpusubtype (0)"
+						" extends past the end of the file)\n");
 		if (munmap(ptr_file->ptr_free, ptr_file->size) < 0)
 			return (1);
 		free(ptr_file);

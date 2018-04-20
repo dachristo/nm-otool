@@ -12,7 +12,7 @@
 
 #include "../include/otool.h"
 
-static int			treatment_64(struct segment_command_64 *segment,
+static int		treatment_64(struct segment_command_64 *segment,
 									t_file_ptr *ptr_file, char *file, int lib)
 {
 	int					j;
@@ -56,7 +56,25 @@ static int		treatment_64_data(struct segment_command_64 *segment,
 	return (0);
 }
 
-int					ft_handle64(t_mach_header_64 *header, t_file_ptr *ptr_file,
+static int		handle_flag_d(struct load_command	*lc, t_file_ptr *ptr_file,
+								t_mach_header_64 *header, char *file)
+{
+	int i;
+
+	i = 0;
+	lc = (void *)ptr_file->ptr + sizeof(struct mach_header_64);
+	while (i++ < (int)header->ncmds)
+	{
+		if (treatment_64_data((struct segment_command_64*)lc, ptr_file,
+							file, -1) == 1)
+			return (1);
+		lc = (void *)lc + lc->cmdsize;
+		if (check_ptr(lc, "extends past the end of the file\n", ptr_file) == 1)
+			return (1);
+	}
+}
+
+int				ft_handle64(t_mach_header_64 *header, t_file_ptr *ptr_file,
 								char *file, int lib)
 {
 	int					i;
@@ -66,25 +84,18 @@ int					ft_handle64(t_mach_header_64 *header, t_file_ptr *ptr_file,
 	lc = (void *)ptr_file->ptr + sizeof(*header);
 	while (++i < (int)header->ncmds)
 	{
-		if (treatment_64((struct segment_command_64*)lc, ptr_file, file, lib) == 1)
+		if (treatment_64((struct segment_command_64*)lc, ptr_file,
+						file, lib) == 1)
 			return (1);
 		lc = (void *)lc + lc->cmdsize;
 		if (ptr_file->options->flag_d == TRUE)
 		{
-			i = 0;
-			lc = (void *)ptr_file->ptr + sizeof(struct mach_header_64);
-			while (i++ < (int)header->ncmds)
-			{
-				if (treatment_64_data((struct segment_command_64*)lc, ptr_file,
-								file, -1) == 1)
-					return (1);
-				lc = (void *)lc + lc->cmdsize;
-				if (check_ptr(lc, "extends past the end of the file\n", ptr_file) == 1)
-					return (1);
-			}
+			if (handle_flag_d(lc, ptr_file, header, file) == 1)
+				return (1);
 		}
-		if (check_ptr(lc, "extends past the end of the file\n", ptr_file) == 1 ||
-				(check_lc(lc->cmdsize, i, (int)header->ncmds, ptr_file) == 1))
+		if (check_ptr(lc, "extends past the end of the file\n",
+					ptr_file) == 1 ||
+			(check_lc(lc->cmdsize, i, (int)header->ncmds, ptr_file) == 1))
 			return (1);
 	}
 	return (0);

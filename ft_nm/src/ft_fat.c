@@ -30,7 +30,7 @@ int	ft_fat_handle(t_fat_header *header, t_file_ptr *ptr_file, char *file)
 	}
 	ptr_file->ptr = (void*)ptr_file->ptr + ft_rev_int(arch->offset);
 	if (*(unsigned int*)ptr_file->ptr == MH_MAGIC_64)
-		return (ft_handle64((struct mach_header_64 *) ptr_file->ptr,
+		return (ft_handle64((struct mach_header_64 *)ptr_file->ptr,
 							ptr_file, -1, -1));
 	else if (!ft_strncmp(ptr_file->ptr, ARMAG, SARMAG))
 		return (ft_lib(ptr_file, file, ft_rev_int(arch->size)));
